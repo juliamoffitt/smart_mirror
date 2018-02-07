@@ -1,0 +1,17 @@
+GtkWindow, GtkTextView, GtkBox {
+  background-color: black;
+}
+
+GtkTextView {
+ color: white;
+ font-family: 'Roboto-Regular';
+ font-size: 50px;
+}
+
+#view1 {
+  font-size: 20px;
+}
+
+#view2 {
+  font-size: 70px;
+}
