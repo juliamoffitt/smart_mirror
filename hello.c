@@ -41,12 +41,17 @@ main (int   argc,
   GtkWidget *h_box_2;
   GtkWidget *v_box_1;
   GtkWidget *v_box_2;
-  
+
   main_container = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
   h_box_1 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
   h_box_2 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
   v_box_1 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
   v_box_2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+
+  gtk_widget_set_name(v_box_1, "v_box_1");
+  gtk_widget_set_name(v_box_2, "v_box_2");
+  gtk_widget_set_name(h_box_1, "h_box_1");
+  gtk_widget_set_name(h_box_2, "h_box_2");
 
   gtk_box_pack_start(GTK_BOX(main_container), h_box_1, TRUE, TRUE, 5);
   gtk_box_pack_start(GTK_BOX(main_container), h_box_2, FALSE, TRUE, 5);
@@ -64,24 +69,26 @@ main (int   argc,
   GtkWidget *label_time;
   GtkWidget *label_placeholder;
 
+  d = get_date_string();
+  label_date = gtk_label_new(d);
+  g_free (d);
+  gtk_widget_set_halign(label_date, GTK_ALIGN_START);
+  gtk_box_pack_start(GTK_BOX(v_box_1), label_date, FALSE, FALSE, 1);
+  gtk_widget_set_name(label_date, "label_date");
 
   t = get_time_string();
   label_time = gtk_label_new(t);
   g_free (t);
   gtk_widget_set_halign(label_time, GTK_ALIGN_START);
   gtk_box_pack_start(GTK_BOX(v_box_1), label_time, FALSE, FALSE, 1); 
-
-  d = get_date_string();
-  label_date = gtk_label_new(d);
-  g_free (d);
-  gtk_widget_set_halign(label_date, GTK_ALIGN_START);
-  gtk_box_pack_start(GTK_BOX(v_box_1), label_date, FALSE, FALSE, 1);
+  gtk_widget_set_name(label_time, "label_time");
 
   p = get_date_string();
   label_placeholder = gtk_label_new(p);
   g_free (p);
   gtk_widget_set_halign(label_placeholder, GTK_ALIGN_END);
   gtk_box_pack_start(GTK_BOX(v_box_2), label_placeholder, FALSE, FALSE, 1);
+  gtk_widget_set_name(label_placeholder, "label_placeholder");
 
   g_timeout_add_seconds(0.5, update_label_time, label_time);
   g_timeout_add_seconds(0.5, update_label_date, label_date);

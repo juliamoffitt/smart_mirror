@@ -12,3 +12,10 @@ GtkButton {
  font-size: 20px;
 }
 
+#label_date {
+ font-size:20px;
+}
+
+#label_time {
+  font-size: 70px;
+}
