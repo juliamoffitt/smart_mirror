@@ -64,20 +64,24 @@ main (int   argc,
   GtkWidget *label_time;
   GtkWidget *label_placeholder;
 
+
   t = get_time_string();
   label_time = gtk_label_new(t);
   g_free (t);
-  gtk_box_pack_start(GTK_BOX(v_box_1), label_time, TRUE, TRUE, 1);
+  gtk_widget_set_halign(label_time, GTK_ALIGN_START);
+  gtk_box_pack_start(GTK_BOX(v_box_1), label_time, FALSE, FALSE, 1); 
 
   d = get_date_string();
   label_date = gtk_label_new(d);
   g_free (d);
-  gtk_box_pack_start(GTK_BOX(v_box_1), label_date, TRUE, TRUE, 1);
+  gtk_widget_set_halign(label_date, GTK_ALIGN_START);
+  gtk_box_pack_start(GTK_BOX(v_box_1), label_date, FALSE, FALSE, 1);
 
   p = get_date_string();
   label_placeholder = gtk_label_new(p);
   g_free (p);
-  gtk_box_pack_start(GTK_BOX(v_box_2), label_placeholder, TRUE, TRUE, 1);
+  gtk_widget_set_halign(label_placeholder, GTK_ALIGN_END);
+  gtk_box_pack_start(GTK_BOX(v_box_2), label_placeholder, FALSE, FALSE, 1);
 
   g_timeout_add_seconds(0.5, update_label_time, label_time);
   g_timeout_add_seconds(0.5, update_label_date, label_date);
