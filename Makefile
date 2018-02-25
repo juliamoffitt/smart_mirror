@@ -21,7 +21,7 @@ hello: $(OBJ)
 	gcc -o $@ $^ $(CFLAGS) $(LIBS) 
 
 clean: $(OBJ) hello
-	rm $(OBJ) hello
+	rm $(OBJ) hello *.txt
 
 
 
