@@ -11,6 +11,8 @@
 #include <unistd.h>
 #include <string.h>
 
+#include <libxml2/libxml/xmlmemory.h>
+#include <libxml2/libxml/parser.h>
 
 int
 main (int   argc,
@@ -123,7 +125,7 @@ main (int   argc,
       char *header = "GET /data/2.5/weather?q=London&mode=xml&appid=36f768cab0cdef430b2acf0ffbec6abb HTTP/1.1\r\nHost: api.openweathermap.org\r\n\r\n";
       if (send(sockfd,header,strlen(header),0) !=-1 ) {
         printf("GET Sent...\n");
-        //all right ! now that we're connected, we can receive some data!
+        //now that we're connected, we can receive some data!
         byte_count = recv(sockfd,buf,sizeof(buf)-1,0);
         buf[byte_count] = 0;
 
@@ -140,7 +142,7 @@ main (int   argc,
           i++;
           c++;
         }
-        buf[c] = '\0';
+        buf[i] = '\0';
         printf("%s\n", buf);
       } else {
         printf("send failed\n");
@@ -151,7 +153,7 @@ main (int   argc,
 
   FILE *fp;
   int i;
-  fp = fopen("./weather.txt", "w");
+  fp = fopen("./weather.xml", "w");
   if (fp!= NULL) {
     for (i=0; buf[i] != '\0'; i++){
       fprintf(fp, "%c", buf[i]);
@@ -161,9 +163,9 @@ main (int   argc,
     }
   } else {
     printf("fopen error\n");
-  }
+  } 
+  parse_doc("weather.xml");
 
-  
 
 /*
  * TO DO

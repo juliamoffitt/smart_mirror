@@ -1,6 +1,6 @@
 CC = gcc
-LIBS = `pkg-config --libs gtk+-3.0`
-CFLAGS = `pkg-config --cflags gtk+-3.0`
+LIBS = `pkg-config --libs gtk+-3.0` `xml2-config --libs`
+CFLAGS = `pkg-config --cflags gtk+-3.0` `xml2-config --cflags`
 DEPS = hello.h util.h
 OBJ = hello.o util.o
 
@@ -21,7 +21,7 @@ hello: $(OBJ)
 	gcc -o $@ $^ $(CFLAGS) $(LIBS) 
 
 clean: $(OBJ) hello
-	rm $(OBJ) hello *.txt
+	rm $(OBJ) hello *.xml
 
 
 
