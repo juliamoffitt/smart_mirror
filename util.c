@@ -53,7 +53,7 @@ gboolean update_label_date (gpointer user_data) {
 // returns ptr to first element in xml file
 // returns NULL if error
 // add root element name parameter to aid error handling
-xmlNodePtr parse_doc(char *docname) {
+xmlDocPtr parse_doc(char *docname) {
   xmlDocPtr doc;
   xmlNodePtr cur;
   assert(docname);
@@ -61,7 +61,13 @@ xmlNodePtr parse_doc(char *docname) {
   if (doc == NULL ) {
     fprintf(stderr,"Document not parsed successfully. \n");
     return NULL;
+  } else {
+    return doc;
   }
+}
+
+xmlNodePtr get_root_element(xmlDocPtr doc){
+  xmlNodePtr cur; 
   cur = xmlDocGetRootElement(doc);
   if (cur == NULL) {
     fprintf(stderr,"empty document\n");
@@ -73,45 +79,61 @@ xmlNodePtr parse_doc(char *docname) {
     xmlFreeDoc(doc);
     return NULL;
   }
- // cur = cur->xmlChildrenNode;
- /* while (cur != NULL) {
-    if ((!xmlStrcmp(cur->name, (const xmlChar *)"storyinfo"))){
-   //   parse_ (doc, cur);
-      printf("not sure what to put here yet\n");
-    }
-    cur = cur->next;
-  }
-  xmlFreeDoc(doc); */
   printf("node type: element, name: %s\n", cur->name);
   return cur;
+}
+
+// given element and attribute name and doc
+// returns value of attribute
+// returns null if element or attribute not found
+xmlChar *get_property(xmlDocPtr doc, xmlChar *element, xmlChar *attr) {
+  xmlNodePtr cur = find_element(doc, element);
+  if (cur != NULL) {
+    if(xmlHasProp(cur, attr)) {
+      return xmlGetProp(cur, attr);
+    } else {
+      printf("attribute not found\n");
+      return NULL;
+    }
+  } else {
+    printf("element not found\n");
+    return NULL;
+  }
 } 
 
-// given ptr to doc, and ptr to root node
-// returns ptr to node with specified element name
-// returns NULL if no such element exists
-// use xmlNodeListGetString to get value of element
-xmlNodePtr get_element(xmlDocPtr doc, xmlNodePtr cur, 
-                  const xmlChar *element_name) {
-  xmlChar *element; 
-  cur = cur->xmlChildrenNode;
-  while (cur != NULL) {
-    if ((!xmlStrcmp(cur->name, (const xmlChar *) element_name))) {
-      element = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
-      printf("element is: %s\n", element);
-      xmlFree(element);
-      return cur;
-    } cur = cur->next;
-  }
-  cur = NULL;
-  printf("element not found");
-  return cur; 
+// recursive tree search wrapper func
+// to find element
+// give doc
+// return pointer to element
+// if element DNE, returns NULL
+xmlNodePtr find_element(xmlDocPtr doc, xmlChar *element_name) {
+  xmlNodePtr cur, res;
+  cur = get_root_element(doc);
+  res = NULL;
+  res = find_element_helper(cur, res, element_name);
+  return res;
 }
 
-// assume we are given proper ptr to element
-// add error handling
-xmlChar * get_attribute(xmlDocPtr doc, xmlNodePtr cur,
-                       const xmlChar *attribute_name) {
-  xmlChar *attribute_value = xmlGetProp(cur, attribute_name);
-  printf("%s is %s\n", attribute_name, attribute_value);
-  return attribute_value;
+// recursive tree search helper func
+// to find element
+// give current node, result holder, element name to match
+// returns pointer to element
+xmlNodePtr find_element_helper(xmlNodePtr cur, xmlNodePtr res,
+                               xmlChar *element_name) {  
+  if (res != NULL) return res;
+  if ((!xmlStrcmp(cur->name, element_name))) { //matches
+    res = cur;
+    return res;
+  }
+  if (xmlChildElementCount(cur) != 0) { //children
+    res = find_element_helper(cur->xmlChildrenNode, res, element_name);
+    if (res != NULL) return res;
+  }
+  if (cur->next != NULL) {
+    res = find_element_helper(cur->next, res, element_name);
+    if (res != NULL) return res;
+  }
+  return res;
 }
+
+

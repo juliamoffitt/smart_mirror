@@ -13,8 +13,10 @@ char* get_time_string();
 char* local_time();
 gboolean update_label_time(gpointer user_data);
 gboolean update_label_date(gpointer user_data);
-xmlNodePtr parse_doc(char *docname);
-xmlNodePtr get_element(xmlDocPtr doc, xmlNodePtr cur, 
-                      const xmlChar *element_name);
-xmlChar * get_attribute(xmlDocPtr doc, xmlNodePtr cur,
-                       const xmlChar* attribute_name);
+xmlDocPtr parse_doc(char *docname);
+xmlNodePtr get_root_element(xmlDocPtr doc);
+xmlChar* get_property(xmlDocPtr doc, xmlChar *element, xmlChar *attr);
+xmlNodePtr find_element_helper(xmlNodePtr Cur, xmlNodePtr res,
+                               xmlChar *element_name);
+xmlNodePtr find_element(xmlDocPtr doc, xmlChar *element_name);
+

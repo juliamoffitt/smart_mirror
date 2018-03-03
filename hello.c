@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <gtk/gtk.h>
 #include <time.h>
 #include <stdlib.h>
@@ -163,8 +164,15 @@ main (int   argc,
     }
   } else {
     printf("fopen error\n");
-  } 
-  parse_doc("weather.xml");
+  }
+// --------------------------------------------------------------------
+ 
+  xmlDocPtr doc = parse_doc("weather.xml");
+  xmlChar *temp = get_property(doc, "temperature", "value");
+  printf("temperature is %s\n", temp);
+
+  xmlChar *sunset = get_property(doc, "sun", "set");
+  printf("sunset is %s\n", sunset);
 
 
 /*
