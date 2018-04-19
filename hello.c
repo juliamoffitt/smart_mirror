@@ -126,15 +126,19 @@ main (int   argc,
   xmlChar *sunset = get_property(doc, "sun", "set");
   printf("sunset is %s\n", sunset);
   struct tm sunset_time;
+  xmlChar sunset_formatted[80];
 
   strptime(sunset, "%Y-%m-%dT%H:%M%S", &sunset_time);
+  sunset_time.tm_hour = sunset_time.tm_hour+17%24;
+  strftime(sunset_formatted, 80, "Sunset: %l:%M %p", &sunset_time);
   printf("please don't seg fault\n");
+  printf("sunset time is: %s\n", sunset_formatted);
 //-------------------------------------------------------------------
 //---------pack sunset and temp--------------------------------------
 
   GtkWidget *label_sunset;
-  label_sunset = gtk_label_new(sunset);
-  g_free(sunset);
+  label_sunset = gtk_label_new(sunset_formatted);
+  //g_free(sunset);
   gtk_widget_set_halign(label_sunset, GTK_ALIGN_END);
   gtk_box_pack_start(GTK_BOX(v_box_2), label_sunset, FALSE, FALSE, 1);
   gtk_widget_set_name(label_sunset, "label_sunset");
@@ -156,7 +160,7 @@ main (int   argc,
  *   -write test cases
  *   -???
  */
-  //gtk_widget_show_all(window);
+  gtk_widget_show_all(window);
   gtk_main();
   
   return 0;

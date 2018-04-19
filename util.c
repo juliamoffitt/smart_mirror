@@ -15,6 +15,10 @@
 #include <unistd.h>
 #include <string.h>
 
+int mod(int x, int y){
+  return x%y;
+}
+
 char* get_date_string(){
   time_t time_var = time(NULL);
   struct tm *info;
@@ -162,7 +166,7 @@ void create_current_file(){
       fprintf(stderr, "connect failed\n");
     } else {
       printf("Connected!\n");
-      char *header = "GET /data/2.5/weather?q=Sacramento&units=imperial&mode=xml&appid=36f768cab0cdef430b2acf0ffbec6abb HTTP/1.1\r\nHost: api.openweathermap.org\r\n\r\n";
+      char *header = "GET /data/2.5/weather?zip=95821&units=imperial&mode=xml&appid=36f768cab0cdef430b2acf0ffbec6abb HTTP/1.1\r\nHost: api.openweathermap.org\r\n\r\n";
       if (send(sockfd,header,strlen(header),0) !=-1 ) {
         printf("now that we're connected, we can receive some data!");
         byte_count = recv(sockfd,buf,sizeof(buf)-1,0);
