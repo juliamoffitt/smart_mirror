@@ -92,89 +92,40 @@ main (int   argc,
   gtk_box_pack_start(GTK_BOX(v_box_1), label_time, FALSE, FALSE, 1); 
   gtk_widget_set_name(label_time, "label_time");
 
-  p = get_date_string();
+/*  p = get_date_string();
   label_placeholder = gtk_label_new(p);
   g_free (p);
   gtk_widget_set_halign(label_placeholder, GTK_ALIGN_END);
   gtk_box_pack_start(GTK_BOX(v_box_2), label_placeholder, FALSE, FALSE, 1);
   gtk_widget_set_name(label_placeholder, "label_placeholder");
+*/
 
   g_timeout_add_seconds(0.5, update_label_time, label_time);
   //g_timeout_add_seconds(0.5, update_label_date, label_date);
+  create_current_file();
 
-// -----------------------------------------------------------------------------
-  struct addrinfo hints, *res;
-  int sockfd;
+  printf("after create current file\n");
 
-  char buf[10000];
-  int byte_count;
-
-  //get host info, make socket and connect it
-  memset(&hints, 0,sizeof hints);
-  hints.ai_family=AF_UNSPEC;
-  hints.ai_socktype = SOCK_STREAM;
-
-  if (getaddrinfo("api.openweathermap.org","80", &hints, &res) != 0) {
-    printf("getaddrinfo failed\n");
-  } else {
-    sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
-    printf("Connecting...\n");
-    if (connect(sockfd,res->ai_addr,res->ai_addrlen) != 0){
-      printf("connect failed\n");
-    } else {
-      printf("Connected!\n");
-      char *header = "GET /data/2.5/weather?q=London&mode=xml&appid=36f768cab0cdef430b2acf0ffbec6abb HTTP/1.1\r\nHost: api.openweathermap.org\r\n\r\n";
-      if (send(sockfd,header,strlen(header),0) !=-1 ) {
-        printf("GET Sent...\n");
-        //now that we're connected, we can receive some data!
-        byte_count = recv(sockfd,buf,sizeof(buf)-1,0);
-        buf[byte_count] = 0;
-
-        printf("recv()'d %d bytes of data in buf\n",byte_count);
-        printf("%s\n",buf);
-        int c=0; 
-        while (buf[c] != '<') {
-          c++;
-        }
-        printf("c is %d\n", c);
-        int i=0; 
-        while (buf[c] !='\0') {
-          buf[i] = buf[c];
-          i++;
-          c++;
-        }
-        buf[i] = '\0';
-        printf("%s\n", buf);
-      } else {
-        printf("send failed\n");
-      }
-    }
-  }
-// ----------------------------------------------------------------------------
-
-  FILE *fp;
-  int i;
-  fp = fopen("./weather.xml", "w");
-  if (fp!= NULL) {
-    for (i=0; buf[i] != '\0'; i++){
-      fprintf(fp, "%c", buf[i]);
-    }
-    if (fclose(fp)!=0) {
-      printf("fclose error\n");
-    }
-  } else {
-    printf("fopen error\n");
-  }
-// --------------------------------------------------------------------
- 
-  xmlDocPtr doc = parse_doc("weather.xml");
+  xmlDocPtr doc = parse_doc("current.xml");
   xmlChar *temp = get_property(doc, "temperature", "value");
   printf("temperature is %s\n", temp);
 
   xmlChar *sunset = get_property(doc, "sun", "set");
   printf("sunset is %s\n", sunset);
 
+  GtkWidget *label_sunset;
+  label_sunset = gtk_label_new(sunset);
+  g_free(sunset);
+  gtk_widget_set_halign(label_sunset, GTK_ALIGN_END);
+  gtk_box_pack_start(GTK_BOX(v_box_2), label_sunset, FALSE, FALSE, 1);
+  gtk_widget_set_name(label_sunset, "label_sunset");
 
+  GtkWidget *label_temp;
+  label_temp = gtk_label_new(temp);
+  g_free(temp);
+  gtk_widget_set_halign(label_temp, GTK_ALIGN_END);
+  gtk_box_pack_start(GTK_BOX(v_box_2), label_temp, FALSE, FALSE, 1);
+  gtk_widget_set_name(label_temp, "label_temp");
 /*
  * TO DO
  *   -implement xml parser
@@ -186,7 +137,7 @@ main (int   argc,
  *   -write test cases
  *   -???
  */
-  //gtk_widget_show_all(window);
+  gtk_widget_show_all(window);
   gtk_main();
   
   return 0;

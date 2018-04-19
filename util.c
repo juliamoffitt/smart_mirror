@@ -9,6 +9,11 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <unistd.h>
+#include <string.h>
 
 char* get_date_string(){
   time_t time_var = time(NULL);
@@ -136,4 +141,68 @@ xmlNodePtr find_element_helper(xmlNodePtr cur, xmlNodePtr res,
   return res;
 }
 
+void create_current_file(){
+  struct addrinfo hints, *res;
+  int sockfd;
 
+  char buf[10000];
+  int byte_count;
+
+  //get host info, make socket and connect it
+  memset(&hints, 0,sizeof hints);
+  hints.ai_family=AF_UNSPEC;
+  hints.ai_socktype = SOCK_STREAM;
+
+  if (getaddrinfo("api.openweathermap.org","80", &hints, &res) != 0) {
+    fprintf(stderr, "getaddrinfo failed\n");
+  } else {
+    sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
+    //printf("Connecting...\n");
+    if (connect(sockfd,res->ai_addr,res->ai_addrlen) != 0){
+      fprintf(stderr, "connect failed\n");
+    } else {
+      printf("Connected!\n");
+      char *header = "GET /data/2.5/weather?q=Sacramento&units=imperial&mode=xml&appid=36f768cab0cdef430b2acf0ffbec6abb HTTP/1.1\r\nHost: api.openweathermap.org\r\n\r\n";
+      if (send(sockfd,header,strlen(header),0) !=-1 ) {
+        printf("now that we're connected, we can receive some data!");
+        byte_count = recv(sockfd,buf,sizeof(buf)-1,0);
+        buf[byte_count] = 0;
+
+        printf("recv()'d %d bytes of data in buf\n",byte_count);
+        printf("%s\n",buf);
+        int c=0;
+        while (buf[c] != '<') {
+          c++;
+        }
+        printf("c is %d\n", c);
+        int i=0;
+        while (buf[c] !='\0') {
+          buf[i] = buf[c];
+          i++;
+          c++;
+        }
+        buf[i] = '\0';
+        //printf("%s\n", buf);
+      } else {
+        fprintf(stderr, "send failed\n");
+      }
+    }
+  }
+// ---------------------------------------------------------------------
+
+  FILE *fp;
+  int i;
+  fp = fopen("./current.xml", "w");
+  if (fp!= NULL) {
+    for (i=0; buf[i] != '\0'; i++){
+      fprintf(fp, "%c", buf[i]);
+    }
+    if (fclose(fp)!=0) {
+      printf("fclose error\n");
+    }
+  } else {
+    printf("fopen error\n");
+  }
+// --------------------------------------------------------------------
+
+}

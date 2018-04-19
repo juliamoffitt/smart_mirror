@@ -19,4 +19,4 @@ xmlChar* get_property(xmlDocPtr doc, xmlChar *element, xmlChar *attr);
 xmlNodePtr find_element_helper(xmlNodePtr Cur, xmlNodePtr res,
                                xmlChar *element_name);
 xmlNodePtr find_element(xmlDocPtr doc, xmlChar *element_name);
-
+void create_current_file();
