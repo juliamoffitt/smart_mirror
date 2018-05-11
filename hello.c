@@ -149,11 +149,28 @@ main (int   argc,
   gtk_widget_set_halign(label_temp, GTK_ALIGN_END);
   gtk_box_pack_start(GTK_BOX(v_box_2), label_temp, FALSE, FALSE, 1);
   gtk_widget_set_name(label_temp, "label_temp");
+
+  GtkWidget *image;
+  char *icon_path;
+  xmlChar *icon_code;
+
+  icon_code = get_property(doc, "weather", "icon");
+  if (icon_code != NULL) {
+    icon_path = get_icon_string(icon_code);
+    printf("icon code is %s\n", icon_code);
+    if (icon_path != NULL) {
+      image = gtk_image_new_from_file(icon_path);
+      printf("icon path is %s\n", icon_path);
+      gtk_box_pack_start(GTK_BOX(v_box_2), image, FALSE, FALSE, 1);
+    } else printf ("icon path is null");
+  } else printf ("icon code is null");
 /*
  * TO DO
- *   -implement xml parser
- *   -display weather
- *   -style weather
+ *   -figure out how to add pics
+ *   -add sunset icon
+ *   -make temp an int
+ *   -add weather icon
+ *   -add weather descript
  *   -error handling
  *   -clean code and comment
  *   -documentation

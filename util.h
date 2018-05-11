@@ -21,3 +21,4 @@ xmlNodePtr find_element_helper(xmlNodePtr Cur, xmlNodePtr res,
                                xmlChar *element_name);
 xmlNodePtr find_element(xmlDocPtr doc, xmlChar *element_name);
 void create_current_file();
+char* get_icon_string(xmlChar *icon_code);

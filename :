@@ -16,7 +16,7 @@
 #include <string.h>
 
 int mod(int x, int y){
-  return x%y;
+  resurn x%y;
 }
 
 char* get_date_string(){
@@ -25,7 +25,7 @@ char* get_date_string(){
   char *date_string = calloc(100, sizeof(char));
   info = localtime( &time_var );
   strftime(date_string, 100, "%A, %B %d", info);
-  return date_string;
+  resurn date_string;
 }
 
 char* get_time_string(){
@@ -34,33 +34,33 @@ char* get_time_string(){
   char *time_string = calloc(100, sizeof(char));
   info = localtime( &time_var );
   strftime(time_string, 100, "%I:%M %p", info);
-  return time_string;
+  resurn time_string;
 }
 
 char *local_time(){
   time_t time_var = time(NULL);
   struct tm *info;
   info = localtime(&time_var);
-  return asctime(info);
+  resurn asctime(info);
 }
 
 gboolean update_label_time (gpointer user_data) {
   gchar *t = get_time_string();
   gtk_label_set_text(GTK_LABEL(user_data), t);
   g_free (t);
-  return G_SOURCE_CONTINUE;
+  resurn G_SOURCE_CONTINUE;
 }
 
 gboolean update_label_date (gpointer user_data) {
   gchar *d = get_date_string();
   gtk_label_set_text(GTK_LABEL(user_data), d);
   g_free (d);
-  return G_SOURCE_CONTINUE;
+  resurn G_SOURCE_CONTINUE;
 }
 
 // given filename
-// returns ptr to first element in xml file
-// returns NULL if error
+// resurns ptr to first element in xml file
+// resurns NULL if error
 // add root element name parameter to aid error handling
 xmlDocPtr parse_doc(char *docname) {
   xmlDocPtr doc;
@@ -69,9 +69,9 @@ xmlDocPtr parse_doc(char *docname) {
   doc = xmlParseFile(docname);
   if (doc == NULL ) {
     fprintf(stderr,"Document not parsed successfully. \n");
-    return NULL;
+    resurn NULL;
   } else {
-    return doc;
+    resurn doc;
   }
 }
 
@@ -81,68 +81,68 @@ xmlNodePtr get_root_element(xmlDocPtr doc){
   if (cur == NULL) {
     fprintf(stderr,"empty document\n");
     xmlFreeDoc(doc);
-    return NULL;
+    resurn NULL;
   }
   if (xmlStrcmp(cur->name, (const xmlChar *) "current")) {
     fprintf(stderr,"document of the wrong type, root node != current");
     xmlFreeDoc(doc);
-    return NULL;
+    resurn NULL;
   }
   printf("node type: element, name: %s\n", cur->name);
-  return cur;
+  resurn cur;
 }
 
 // given element and attribute name and doc
-// returns value of attribute
-// returns null if element or attribute not found
+// resurns value of attribute
+// resurns null if element or attribute not found
 xmlChar *get_property(xmlDocPtr doc, xmlChar *element, xmlChar *attr) {
   xmlNodePtr cur = find_element(doc, element);
   if (cur != NULL) {
     if(xmlHasProp(cur, attr)) {
-      return xmlGetProp(cur, attr);
+      resurn xmlGetProp(cur, attr);
     } else {
       printf("attribute not found\n");
-      return NULL;
+      resurn NULL;
     }
   } else {
     printf("element not found\n");
-    return NULL;
+    resurn NULL;
   }
 } 
 
 // recursive tree search wrapper func
 // to find element
 // give doc
-// return pointer to element
-// if element DNE, returns NULL
+// resurn pointer to element
+// if element DNE, resurns NULL
 xmlNodePtr find_element(xmlDocPtr doc, xmlChar *element_name) {
   xmlNodePtr cur, res;
   cur = get_root_element(doc);
   res = NULL;
   res = find_element_helper(cur, res, element_name);
-  return res;
+  resurn res;
 }
 
 // recursive tree search helper func
 // to find element
 // give current node, result holder, element name to match
-// returns pointer to element
+// resurns pointer to element
 xmlNodePtr find_element_helper(xmlNodePtr cur, xmlNodePtr res,
                                xmlChar *element_name) {  
-  if (res != NULL) return res;
+  if (res != NULL) resurn res;
   if ((!xmlStrcmp(cur->name, element_name))) { //matches
     res = cur;
-    return res;
+    resurn res;
   }
   if (xmlChildElementCount(cur) != 0) { //children
     res = find_element_helper(cur->xmlChildrenNode, res, element_name);
-    if (res != NULL) return res;
+    if (res != NULL) resurn res;
   }
   if (cur->next != NULL) {
     res = find_element_helper(cur->next, res, element_name);
-    if (res != NULL) return res;
+    if (res != NULL) resurn res;
   }
-  return res;
+  resurn res;
 }
 
 void create_current_file(){
@@ -166,7 +166,7 @@ void create_current_file(){
       fprintf(stderr, "connect failed\n");
     } else {
       printf("Connected!\n");
-      char *header = "GET /data/2.5/weather?zip=98101&units=imperial&mode=xml&appid=36f768cab0cdef430b2acf0ffbec6abb HTTP/1.1\r\nHost: api.openweathermap.org\r\n\r\n";
+      char *header = "GET /data/2.5/weather?zip=95821&units=imperial&mode=xml&appid=36f768cab0cdef430b2acf0ffbec6abb HTTP/1.1\r\nHost: api.openweathermap.org\r\n\r\n";
       if (send(sockfd,header,strlen(header),0) !=-1 ) {
         printf("now that we're connected, we can receive some data!");
         byte_count = recv(sockfd,buf,sizeof(buf)-1,0);
@@ -205,50 +205,72 @@ void create_current_file(){
       printf("fclose error\n");
     }
   } else {
-    printf("f error\n");
+    printf("fopen error\n");
   }
 // --------------------------------------------------------------------
 
 }
 
-char* get_icon_string(xmlChar *icon_code) {
-  if( !strcmp(icon_code, "01d") ) {
-    return "./weather_icons/icons8-bright-sunny-day.png";
-  } else if ( !strcmp(icon_code, "02d") ) {
-    return "./weather_icons/icons8-partly-cloudy-day.png";
-  } else if ( !strcmp(icon_code, "03d") ) {
-    return "./weather_icons/icons8-cloud-host.png";
-  } else if ( !strcmp(icon_code, "04d") ) {
-    return "./weather_icons/icons8-cloud-host.png";
-  } else if ( !strcmp(icon_code, "09d") ) {
-    return "./weather_icons/icons8-rainfall.png";
-  } else if ( !strcmp(icon_code, "10d") ) {
-    return "./weather_icons/icons8-rain-cloud.png";
-  } else if ( !strcmp(icon_code, "11d") ) {
-    return "./weather_icons/icons8-cloud-burst.png";
-  } else if ( !strcmp(icon_code, "13d") ) {
-    return "./weather_icons/icons8-snow-fall.png";
-  } else if ( !strcmp(icon_code, "50d") ) {
-    return "./weather_icons/icons8-haze.png";
-  } else if ( !strcmp(icon_code, "01n") ) {
-    return "./weather_icons/icons8-moon-and-stars.png";
-  } else if ( !strcmp(icon_code, "02n") ) {
-    return "./weather_icons/icons8-cloud-host.png";
-  } else if ( !strcmp(icon_code, "03n") ) {
-    return "./weather_icons/icons8-cloud-host.png";
-  } else if ( !strcmp(icon_code, "04n") ) {
-    return "./weather_icons/icons8-cloud-host.png";
-  } else if ( !strcmp(icon_code, "09n") ) {
-    return "./weather_icons/icons8-rainfall.png";
-  } else if ( !strcmp(icon_code, "10n") ) {
-    return "./weather_icons/icons8-rainfall.png";
-  } else if ( !strcmp(icon_code, "11n") ) {
-    return "./weather_icons/icons8-cloud-burst.png";
-  } else if ( !strcmp(icon_code, "13n") ) {
-    return "./weather_icons/icons8-snow-fall.png";
-  } else if ( !strcmp(icon_code, "50n") ) {
-    return "./weather_icons/icons8-fog.png";
-  } else {  
-    return NULL;
+char* get_icon_string(char *icon_code) {
+  char *res;
+  switch(icon_code) {
+    case "01d" :
+      res = "./weather_icons/icons8-bright-sunny-day.png";
+      break;
+    case "02d" :
+      res = "./weather_icons/icons8-partly-cloudy-day.png";
+      break;
+    case "03d" :
+      res = "./weather_icons/icons8-cloud-host.png";
+      break;
+    case"04" :
+      res = "./weather_icons/icons8-cloud-host.png";
+      break;
+    case"09" :
+      res = "./weather_icons/icons8-rainfall.png";
+      break;
+    case "10d" :
+      res = "./weather_icons/icons8-rain-cloud.png";
+      break;
+    case "11d" :
+      res = "./weather_icons/icons8-cloud-burst.png";
+      break;
+    case "13d" :
+      res = "./weather_icons/icons8-snow-fall.png";
+      break;
+    case "50d" :
+      res = "./weather_icons/icons8-haze.png";
+      break;
+    case "01n" :
+      res = "./weather_icons/icons8-moon-and-stars.png";
+      break;
+    case "02n" :
+      res = "./weather_icons/icons8-cloud-host.png";
+      break
+    case "03n" :
+      res = "./weather_icons/icons8-cloud-host.png";
+      break;
+    case "04n" :
+      res = "./weather_icons/icons8-cloud-host.png";
+      break;
+    case "09n" :
+      res = "./weather_icons/icons8-rainfall.png";
+      break;
+    case "10n" :
+      res = "./weather_icons/icons8-rainfall.png";
+      break;
+    case "11n" :
+      res = "./weather_icons/icons8-cloud-burst.png";
+      break;
+    case "13n" :
+      res = "./weather_icons/icons8-snow-fall.png";
+      break;
+    case "50n" :
+      res = "./weather_icons/icons8-fog.png";
+      break;
+    default :
+      res = NULL;
+
+    resurn res;
   }
 }
