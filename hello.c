@@ -125,6 +125,18 @@ main (int   argc,
   xmlDocPtr doc = parse_doc("current.xml");
   xmlChar temp[100];
   strcpy(temp, get_property(doc, "temperature", "value"));
+ 
+  int i = 0; 
+  while(temp[i] != '\0') {
+    if(temp[i] == '.') {
+      if ( temp[i+1] >= 5 ) {
+        temp[i-1] = temp[i-1]+1;
+      }
+      temp[i] = '\0';
+    }
+    i++;
+  }
+
   xmlChar deg[10];
   strcpy(deg, "°");
   strcat(temp, deg);
@@ -180,14 +192,14 @@ main (int   argc,
     } else printf ("icon path is null");
   } else printf ("icon code is null");
 
-
+  GtkWidget *sunset_icon;
+  sunset_icon = gtk_image_new_from_file("./weather_icons/icons8-sunset.png");
+  gtk_widget_set_halign(sunset_icon, GTK_ALIGN_END);
+  gtk_widget_set_valign(sunset_icon, GTK_ALIGN_START);
+  gtk_box_pack_end(GTK_BOX(h_box_3), sunset_icon, FALSE, FALSE, 3);
 
 /*
  * TO DO
- *   -figure out how to add pics
- *   -add sunset icon
- *   -make temp an int
- *   -add weather icon
  *   -add weather descript
  *   -error handling
  *   -clean code and comment
