@@ -1,11 +1,7 @@
-GtkWindow, GtkTextView, GtkBox {
-  background-color: black;
-}
-
-GtkBox {
+GtkBox *{
  color: white;
  font-family: 'Roboto-Regular';
- font-size: 50px;
+ font-size: 20px;
 }
 
 GtkButton {
@@ -18,4 +14,24 @@ GtkButton {
 
 #label_time {
   font-size: 70px;
+}
+
+#label_sunset {
+  font-size: 70px;
+}
+
+#label_temp {
+  font-size: 70px;
+}
+
+#v_box_2 {
+  background-color: blue;
+}
+
+#h_box_3 {
+  background-color: green;
+}
+
+#h_box_4 {
+  background-color: red;
 }

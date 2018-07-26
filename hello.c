@@ -37,7 +37,7 @@ main (int   argc,
   gtk_style_context_add_provider_for_screen(Screen, 
     GTK_STYLE_PROVIDER(Provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
   gtk_css_provider_load_from_path(GTK_CSS_PROVIDER(Provider), 
-    "/home/julia/Coding/smart_mirror/smart_mirror/styles.css", NULL);
+    "./styles.css", NULL);
     
   
 //--------------------------------------------------------------------
@@ -56,12 +56,18 @@ main (int   argc,
   GtkWidget *main_container;
   GtkWidget *h_box_1;
   GtkWidget *h_box_2;
+  GtkWidget *h_box_3;
+  GtkWidget *h_box_4;
+
   GtkWidget *v_box_1;
   GtkWidget *v_box_2;
 
   main_container = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
   h_box_1 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
   h_box_2 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+  h_box_3 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+  h_box_4 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+
   v_box_1 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
   v_box_2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
@@ -69,6 +75,9 @@ main (int   argc,
   gtk_widget_set_name(v_box_2, "v_box_2");
   gtk_widget_set_name(h_box_1, "h_box_1");
   gtk_widget_set_name(h_box_2, "h_box_2");
+  gtk_widget_set_name(h_box_3, "h_box_3");
+  gtk_widget_set_name(h_box_4, "h_box_4");
+  
 
   gtk_box_pack_start(GTK_BOX(main_container), h_box_1, TRUE, TRUE, 5);
   gtk_box_pack_start(GTK_BOX(main_container), h_box_2, FALSE, TRUE, 5);
@@ -76,6 +85,9 @@ main (int   argc,
   gtk_box_pack_start(GTK_BOX(h_box_1), v_box_1, TRUE, TRUE, 1);
   gtk_box_pack_start(GTK_BOX(h_box_1), v_box_2, TRUE, TRUE, 1);
   gtk_box_pack_start(GTK_BOX(h_box_2), button, TRUE, FALSE, 1);
+
+  gtk_box_pack_start(GTK_BOX(v_box_2), h_box_3, TRUE, TRUE, 1);
+  gtk_box_pack_start(GTK_BOX(v_box_2), h_box_4, TRUE, TRUE, 1);
 
   gtk_container_add(GTK_CONTAINER(window), main_container);
 
@@ -140,14 +152,14 @@ main (int   argc,
   label_sunset = gtk_label_new(sunset_formatted);
   //g_free(sunset);
   gtk_widget_set_halign(label_sunset, GTK_ALIGN_END);
-  gtk_box_pack_start(GTK_BOX(v_box_2), label_sunset, FALSE, FALSE, 1);
+  gtk_box_pack_start(GTK_BOX(h_box_3), label_sunset, FALSE, FALSE, 1);
   gtk_widget_set_name(label_sunset, "label_sunset");
 
   GtkWidget *label_temp;
   label_temp = gtk_label_new(temp_string);
   //g_free(temp_string);
   gtk_widget_set_halign(label_temp, GTK_ALIGN_END);
-  gtk_box_pack_start(GTK_BOX(v_box_2), label_temp, FALSE, FALSE, 1);
+  gtk_box_pack_start(GTK_BOX(h_box_4), label_temp, FALSE, FALSE, 1);
   gtk_widget_set_name(label_temp, "label_temp");
 
   GtkWidget *image;
@@ -161,7 +173,7 @@ main (int   argc,
     if (icon_path != NULL) {
       image = gtk_image_new_from_file(icon_path);
       printf("icon path is %s\n", icon_path);
-      gtk_box_pack_start(GTK_BOX(v_box_2), image, FALSE, FALSE, 1);
+      gtk_box_pack_start(GTK_BOX(h_box_4), image, FALSE, FALSE, 1);
     } else printf ("icon path is null");
   } else printf ("icon code is null");
 /*
