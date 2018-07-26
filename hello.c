@@ -140,15 +140,24 @@ main (int   argc,
   label_sunset = gtk_label_new(sunset_formatted);
   //g_free(sunset);
   gtk_widget_set_halign(label_sunset, GTK_ALIGN_END);
-  gtk_box_pack_start(GTK_BOX(v_box_2), label_sunset, FALSE, FALSE, 1);
+  //gtk_box_pack_start(GTK_BOX(v_box_2), label_sunset, FALSE, FALSE, 1);
   gtk_widget_set_name(label_sunset, "label_sunset");
 
   GtkWidget *label_temp;
   label_temp = gtk_label_new(temp_string);
   //g_free(temp_string);
   gtk_widget_set_halign(label_temp, GTK_ALIGN_END);
-  gtk_box_pack_start(GTK_BOX(v_box_2), label_temp, FALSE, FALSE, 1);
+  //gtk_box_pack_start(GTK_BOX(v_box_2), label_temp, FALSE, FALSE, 1);
   gtk_widget_set_name(label_temp, "label_temp");
+
+  GtkWidget *h_box_3;
+  GtkWidget *h_box_4;
+  h_box_3 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+  h_box_4 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_box_pack_start(GTK_BOX(h_box_4), label_temp, FALSE, FALSE, 1);
+  gtk_box_pack_start(GTK_BOX(h_box_3), label_sunset, FALSE, FALSE, 1);
+  gtk_box_pack_start(GTK_BOX(v_box_2), h_box_3, FALSE, FALSE, 1);
+  gtk_box_pack_start(GTK_BOX(v_box_2), h_box_4, FALSE, FALSE, 1);
 
   GtkWidget *image;
   char *icon_path;
@@ -161,9 +170,11 @@ main (int   argc,
     if (icon_path != NULL) {
       image = gtk_image_new_from_file(icon_path);
       printf("icon path is %s\n", icon_path);
-      gtk_box_pack_start(GTK_BOX(v_box_2), image, FALSE, FALSE, 1);
+      gtk_box_pack_start(GTK_BOX(h_box_4), image, FALSE, FALSE, 1);
     } else printf ("icon path is null");
   } else printf ("icon code is null");
+
+
 /*
  * TO DO
  *   -figure out how to add pics
