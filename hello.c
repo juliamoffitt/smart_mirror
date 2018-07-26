@@ -86,8 +86,8 @@ main (int   argc,
   gtk_box_pack_start(GTK_BOX(h_box_1), v_box_2, TRUE, TRUE, 1);
   gtk_box_pack_start(GTK_BOX(h_box_2), button, TRUE, FALSE, 1);
 
-  gtk_box_pack_start(GTK_BOX(v_box_2), h_box_3, TRUE, TRUE, 1);
-  gtk_box_pack_start(GTK_BOX(v_box_2), h_box_4, TRUE, TRUE, 1);
+  gtk_box_pack_start(GTK_BOX(v_box_2), h_box_3, FALSE, TRUE, 1);
+  gtk_box_pack_start(GTK_BOX(v_box_2), h_box_4, FALSE, TRUE, 1);
 
   gtk_container_add(GTK_CONTAINER(window), main_container);
 
@@ -105,14 +105,14 @@ main (int   argc,
   label_date = gtk_label_new(d);
   g_free (d);
   gtk_widget_set_halign(label_date, GTK_ALIGN_START);
-  gtk_box_pack_start(GTK_BOX(v_box_1), label_date, FALSE, FALSE, 1);
+  gtk_box_pack_start(GTK_BOX(v_box_1), label_date, FALSE, FALSE, 3);
   gtk_widget_set_name(label_date, "label_date");
 
   t = get_time_string();
   label_time = gtk_label_new(t);
   g_free (t);
   gtk_widget_set_halign(label_time, GTK_ALIGN_START);
-  gtk_box_pack_start(GTK_BOX(v_box_1), label_time, FALSE, FALSE, 1); 
+  gtk_box_pack_start(GTK_BOX(v_box_1), label_time, FALSE, FALSE, 3); 
   gtk_widget_set_name(label_time, "label_time");
 
   g_timeout_add_seconds(0.5, update_label_time, label_time);
@@ -142,8 +142,7 @@ main (int   argc,
 
   strptime(sunset, "%Y-%m-%dT%H:%M%S", &sunset_time);
   sunset_time.tm_hour = sunset_time.tm_hour+17%24;
-  strftime(sunset_formatted, 80, "Sunset: %l:%M %p", &sunset_time);
-  printf("please don't seg fault\n");
+  strftime(sunset_formatted, 80, "%l:%M %p", &sunset_time);
   printf("sunset time is: %s\n", sunset_formatted);
 //-------------------------------------------------------------------
 //---------pack sunset and temp--------------------------------------
@@ -152,32 +151,17 @@ main (int   argc,
   label_sunset = gtk_label_new(sunset_formatted);
   //g_free(sunset);
   gtk_widget_set_halign(label_sunset, GTK_ALIGN_END);
-<<<<<<< HEAD
-  gtk_box_pack_start(GTK_BOX(h_box_3), label_sunset, FALSE, FALSE, 1);
-//=======
-  //gtk_box_pack_start(GTK_BOX(v_box_2), label_sunset, FALSE, FALSE, 1);
-//>>>>>>> 9cec5076601c7e4484c4816845f237aa2ecef6a2
+  gtk_widget_set_valign(label_sunset, GTK_ALIGN_START);
+  gtk_box_pack_end(GTK_BOX(h_box_3), label_sunset, FALSE, FALSE, 3);
   gtk_widget_set_name(label_sunset, "label_sunset");
 
   GtkWidget *label_temp;
   label_temp = gtk_label_new(temp_string);
   //g_free(temp_string);
   gtk_widget_set_halign(label_temp, GTK_ALIGN_END);
-<<<<<<< HEAD
-  gtk_box_pack_start(GTK_BOX(h_box_4), label_temp, FALSE, FALSE, 1);
-//=======
-  //gtk_box_pack_start(GTK_BOX(v_box_2), label_temp, FALSE, FALSE, 1);
-//>>>>>>> 9cec5076601c7e4484c4816845f237aa2ecef6a2
+  gtk_widget_set_valign(label_temp, GTK_ALIGN_START);
+  gtk_box_pack_end(GTK_BOX(h_box_4), label_temp, FALSE, FALSE, 3);
   gtk_widget_set_name(label_temp, "label_temp");
-
-  GtkWidget *h_box_3;
-  GtkWidget *h_box_4;
-  h_box_3 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-  h_box_4 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_box_pack_start(GTK_BOX(h_box_4), label_temp, FALSE, FALSE, 1);
-  gtk_box_pack_start(GTK_BOX(h_box_3), label_sunset, FALSE, FALSE, 1);
-  gtk_box_pack_start(GTK_BOX(v_box_2), h_box_3, FALSE, FALSE, 1);
-  gtk_box_pack_start(GTK_BOX(v_box_2), h_box_4, FALSE, FALSE, 1);
 
   GtkWidget *image;
   char *icon_path;
@@ -190,9 +174,12 @@ main (int   argc,
     if (icon_path != NULL) {
       image = gtk_image_new_from_file(icon_path);
       printf("icon path is %s\n", icon_path);
-      gtk_box_pack_start(GTK_BOX(h_box_4), image, FALSE, FALSE, 1);
+      gtk_widget_set_halign(image, GTK_ALIGN_END);
+      gtk_widget_set_valign(image, GTK_ALIGN_START);
+      gtk_box_pack_end(GTK_BOX(h_box_4), image, FALSE, FALSE, 3);
     } else printf ("icon path is null");
   } else printf ("icon code is null");
+
 
 
 /*

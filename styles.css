@@ -1,10 +1,15 @@
-GtkBox *{
+GtkWindow {
+ background-color: black;
+}
+
+GtkBox {
  color: white;
  font-family: 'Roboto-Regular';
  font-size: 20px;
 }
 
-GtkButton {
+#button {
+ color: black;
  font-size: 20px;
 }
 
@@ -24,8 +29,20 @@ GtkButton {
   font-size: 70px;
 }
 
+#v_box_1 {
+  background-color: yellow;
+}
+
 #v_box_2 {
   background-color: blue;
+}
+
+#h_box_1 {
+  background-color: orange;
+}
+
+#h_box_2 {
+  background-color: purple;
 }
 
 #h_box_3 {
