@@ -1,54 +1,41 @@
 GtkWindow {
  background-color: black;
+ color: white;
 }
 
 GtkBox {
+ background-color: black;
  color: white;
  font-family: 'Roboto-Regular';
- font-size: 20px;
+ font-size: 50px;
 }
+* {
+  background-color: black;
+} 
 
 #button {
  color: black;
- font-size: 20px;
+ font-size: 50px;
+ background-color: white;
 }
 
 #label_date {
- font-size:20px;
+ font-size:50px;
+ color: white;
 }
 
 #label_time {
-  font-size: 70px;
+  font-size: 130px;
+  color: white;
 }
 
 #label_sunset {
-  font-size: 70px;
+  font-size: 130px;
+  color: white;
 }
 
 #label_temp {
-  font-size: 70px;
+  font-size: 130px;
+  color: white;
 }
 
-#v_box_1 {
-  background-color: yellow;
-}
-
-#v_box_2 {
-  background-color: blue;
-}
-
-#h_box_1 {
-  background-color: orange;
-}
-
-#h_box_2 {
-  background-color: purple;
-}
-
-#h_box_3 {
-  background-color: green;
-}
-
-#h_box_4 {
-  background-color: red;
-}

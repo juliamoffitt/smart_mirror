@@ -8,6 +8,7 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
+void quit_app(GtkWidget *window);
 int mod(int x, int y);
 char* get_date_string();
 char* get_time_string();

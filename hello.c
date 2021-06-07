@@ -50,7 +50,7 @@ main (int   argc,
 
   button = gtk_button_new_with_label ("Quit");
   g_signal_connect_swapped (button, "clicked", 
-    G_CALLBACK (gtk_widget_destroy), window);
+    G_CALLBACK (quit_app), window);
   gtk_widget_set_name(button, "button");
 
   GtkWidget *main_container;

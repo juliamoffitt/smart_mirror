@@ -15,6 +15,11 @@
 #include <unistd.h>
 #include <string.h>
 
+void quit_app(GtkWidget *window){
+  gtk_widget_destroy(window);
+  gtk_main_quit();
+}
+
 int mod(int x, int y){
   return x%y;
 }
