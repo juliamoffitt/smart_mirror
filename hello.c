@@ -34,22 +34,22 @@ main (int   argc,
   GdkDisplay *Display = gdk_display_get_default();
   GdkScreen *Screen = gdk_display_get_default_screen(Display);
 
-  gtk_style_context_add_provider_for_screen(Screen, 
+  gtk_style_context_add_provider_for_screen(Screen,
     GTK_STYLE_PROVIDER(Provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
-  gtk_css_provider_load_from_path(GTK_CSS_PROVIDER(Provider), 
+  gtk_css_provider_load_from_path(GTK_CSS_PROVIDER(Provider),
     "./styles.css", NULL);
-    
-  
+
+
 //--------------------------------------------------------------------
 //---------configure window-------------------------------------------
   window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
   gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
   gtk_window_set_title(GTK_WINDOW(window), "GtkTextView");
   gtk_window_fullscreen(GTK_WINDOW(window));
-  
+
 
   button = gtk_button_new_with_label ("Quit");
-  g_signal_connect_swapped (button, "clicked", 
+  g_signal_connect_swapped (button, "clicked",
     G_CALLBACK (quit_app), window);
   gtk_widget_set_name(button, "button");
 
@@ -77,23 +77,23 @@ main (int   argc,
   gtk_widget_set_name(h_box_2, "h_box_2");
   gtk_widget_set_name(h_box_3, "h_box_3");
   gtk_widget_set_name(h_box_4, "h_box_4");
-  
 
-  gtk_box_pack_start(GTK_BOX(main_container), h_box_1, TRUE, TRUE, 5);
-  gtk_box_pack_start(GTK_BOX(main_container), h_box_2, FALSE, TRUE, 5);
 
-  gtk_box_pack_start(GTK_BOX(h_box_1), v_box_1, TRUE, TRUE, 1);
-  gtk_box_pack_start(GTK_BOX(h_box_1), v_box_2, TRUE, TRUE, 1);
-  gtk_box_pack_start(GTK_BOX(h_box_2), button, TRUE, FALSE, 1);
+  gtk_box_pack_start(GTK_BOX(main_container), h_box_1, TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(main_container), h_box_2, FALSE, TRUE, 0);
 
-  gtk_box_pack_start(GTK_BOX(v_box_2), h_box_3, FALSE, TRUE, 1);
-  gtk_box_pack_start(GTK_BOX(v_box_2), h_box_4, FALSE, TRUE, 1);
+  gtk_box_pack_start(GTK_BOX(h_box_1), v_box_1, TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(h_box_1), v_box_2, TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(h_box_2), button, TRUE, FALSE, 0);
+
+  gtk_box_pack_start(GTK_BOX(v_box_2), h_box_3, FALSE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(v_box_2), h_box_4, FALSE, TRUE, 0);
 
   gtk_container_add(GTK_CONTAINER(window), main_container);
 
 //-------------------------------------------------------------------
 //---------get time and date and pack--------------------------------
-  
+
   gchar *t;
   gchar *d;
   gchar *p;
@@ -105,14 +105,14 @@ main (int   argc,
   label_date = gtk_label_new(d);
   g_free (d);
   gtk_widget_set_halign(label_date, GTK_ALIGN_START);
-  gtk_box_pack_start(GTK_BOX(v_box_1), label_date, FALSE, FALSE, 3);
+  gtk_box_pack_start(GTK_BOX(v_box_1), label_date, FALSE, FALSE, 0);
   gtk_widget_set_name(label_date, "label_date");
 
   t = get_time_string();
   label_time = gtk_label_new(t);
   g_free (t);
   gtk_widget_set_halign(label_time, GTK_ALIGN_START);
-  gtk_box_pack_start(GTK_BOX(v_box_1), label_time, FALSE, FALSE, 3); 
+  gtk_box_pack_start(GTK_BOX(v_box_1), label_time, FALSE, FALSE, 0);
   gtk_widget_set_name(label_time, "label_time");
 
   g_timeout_add_seconds(0.5, update_label_time, label_time);
@@ -125,28 +125,24 @@ main (int   argc,
   xmlDocPtr doc = parse_doc("current.xml");
   xmlChar temp[100];
   strcpy(temp, get_property(doc, "temperature", "value"));
- 
-  int i = 0; 
-  while(temp[i] != '\0') {
-    if(temp[i] == '.') {
-      if ( temp[i+1] >= 5 ) {
-        temp[i-1] = temp[i-1]+1;
-      }
-      temp[i] = '\0';
-    }
+
+  int i = 0;
+  while(temp[i] != '\0' && temp[i] != '.') {
     i++;
   }
+
+  if(temp[i] == '.') temp[i] = '\0';
 
   xmlChar deg[10];
   strcpy(deg, "°");
   strcat(temp, deg);
-  
+
   xmlChar *temp_string = temp;
   printf("temperature is %s\n", temp_string);
 
 //-------------------------------------------------------------------
 //---------get time of sunset in correct format----------------------
-  
+
   xmlChar *sunset = get_property(doc, "sun", "set");
   printf("sunset is %s\n", sunset);
   struct tm sunset_time;
@@ -164,7 +160,7 @@ main (int   argc,
   //g_free(sunset);
   gtk_widget_set_halign(label_sunset, GTK_ALIGN_END);
   gtk_widget_set_valign(label_sunset, GTK_ALIGN_START);
-  gtk_box_pack_end(GTK_BOX(h_box_3), label_sunset, FALSE, FALSE, 3);
+  gtk_box_pack_end(GTK_BOX(h_box_3), label_sunset, FALSE, FALSE, 0);
   gtk_widget_set_name(label_sunset, "label_sunset");
 
   GtkWidget *label_temp;
@@ -172,9 +168,12 @@ main (int   argc,
   //g_free(temp_string);
   gtk_widget_set_halign(label_temp, GTK_ALIGN_END);
   gtk_widget_set_valign(label_temp, GTK_ALIGN_START);
-  gtk_box_pack_end(GTK_BOX(h_box_4), label_temp, FALSE, FALSE, 3);
+  gtk_box_pack_end(GTK_BOX(h_box_4), label_temp, FALSE, FALSE, 0);
   gtk_widget_set_name(label_temp, "label_temp");
 
+
+//-------------------------------------------------------------------
+//---------display icons---------------------------------------------
   GtkWidget *image;
   char *icon_path;
   xmlChar *icon_code;
@@ -188,7 +187,7 @@ main (int   argc,
       printf("icon path is %s\n", icon_path);
       gtk_widget_set_halign(image, GTK_ALIGN_END);
       gtk_widget_set_valign(image, GTK_ALIGN_START);
-      gtk_box_pack_end(GTK_BOX(h_box_4), image, FALSE, FALSE, 3);
+      gtk_box_pack_end(GTK_BOX(h_box_4), image, FALSE, FALSE, 0);
     } else printf ("icon path is null");
   } else printf ("icon code is null");
 
@@ -196,19 +195,20 @@ main (int   argc,
   sunset_icon = gtk_image_new_from_file("./weather_icons/icons8-sunset.png");
   gtk_widget_set_halign(sunset_icon, GTK_ALIGN_END);
   gtk_widget_set_valign(sunset_icon, GTK_ALIGN_START);
-  gtk_box_pack_end(GTK_BOX(h_box_3), sunset_icon, FALSE, FALSE, 3);
+  gtk_box_pack_end(GTK_BOX(h_box_3), sunset_icon, FALSE, FALSE, 0);
 
 /*
  * TO DO
- *   -add weather descript
+ *   -change location to current location for xml
+ *   -adjust padding
+ *   -make quit button appear only on hover
+ *   -make quit button background the correct color
  *   -error handling
  *   -clean code and comment
  *   -documentation
- *   -write test cases
- *   -???
  */
   gtk_widget_show_all(window);
   gtk_main();
-  
+
   return 0;
 }

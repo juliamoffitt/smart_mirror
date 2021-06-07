@@ -1,22 +1,21 @@
-GtkWindow {
- background-color: black;
- color: white;
-}
-
-GtkBox {
- background-color: black;
- color: white;
- font-family: 'Roboto-Regular';
- font-size: 50px;
-}
-* {
+#window, #main_container, #v_box1, #v_box_2, #h_box_1, #h_box_2, #h_box_3, #h_box_4 {
+  background-image: none;
   background-color: black;
-} 
+}
 
 #button {
- color: black;
+ background-image: none;
  font-size: 50px;
- background-color: white;
+ background-color: transparent;
+ color: black;
+ border: none;
+ box-shadow: none;
+ text-outline: black;
+ text-shadow: none;
+}
+
+#button:hover {
+  background-color: white;
 }
 
 #label_date {
@@ -24,18 +23,7 @@ GtkBox {
  color: white;
 }
 
-#label_time {
+#label_time, #label_sunset, #label_temp {
   font-size: 130px;
   color: white;
 }
-
-#label_sunset {
-  font-size: 130px;
-  color: white;
-}
-
-#label_temp {
-  font-size: 130px;
-  color: white;
-}
-
