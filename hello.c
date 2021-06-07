@@ -200,9 +200,8 @@ main (int   argc,
 /*
  * TO DO
  *   -change location to current location for xml
+ *   -remove leading zero from time
  *   -adjust padding
- *   -make quit button appear only on hover
- *   -make quit button background the correct color
  *   -error handling
  *   -clean code and comment
  *   -documentation

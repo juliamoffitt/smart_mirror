@@ -81,7 +81,7 @@ xmlDocPtr parse_doc(char *docname) {
 }
 
 xmlNodePtr get_root_element(xmlDocPtr doc){
-  xmlNodePtr cur; 
+  xmlNodePtr cur;
   cur = xmlDocGetRootElement(doc);
   if (cur == NULL) {
     fprintf(stderr,"empty document\n");
@@ -113,7 +113,7 @@ xmlChar *get_property(xmlDocPtr doc, xmlChar *element, xmlChar *attr) {
     printf("element not found\n");
     return NULL;
   }
-} 
+}
 
 // recursive tree search wrapper func
 // to find element
@@ -133,7 +133,7 @@ xmlNodePtr find_element(xmlDocPtr doc, xmlChar *element_name) {
 // give current node, result holder, element name to match
 // returns pointer to element
 xmlNodePtr find_element_helper(xmlNodePtr cur, xmlNodePtr res,
-                               xmlChar *element_name) {  
+                               xmlChar *element_name) {
   if (res != NULL) return res;
   if ((!xmlStrcmp(cur->name, element_name))) { //matches
     res = cur;
@@ -171,7 +171,7 @@ void create_current_file(){
       fprintf(stderr, "connect failed\n");
     } else {
       printf("Connected!\n");
-      char *header = "GET /data/2.5/weather?zip=98101&units=imperial&mode=xml&appid=36f768cab0cdef430b2acf0ffbec6abb HTTP/1.1\r\nHost: api.openweathermap.org\r\n\r\n";
+      char *header = "GET /data/2.5/weather?zip=95825&units=imperial&mode=xml&appid=36f768cab0cdef430b2acf0ffbec6abb HTTP/1.1\r\nHost: api.openweathermap.org\r\n\r\n";
       if (send(sockfd,header,strlen(header),0) !=-1 ) {
         printf("now that we're connected, we can receive some data!");
         byte_count = recv(sockfd,buf,sizeof(buf)-1,0);
@@ -253,7 +253,7 @@ char* get_icon_string(xmlChar *icon_code) {
     return "./weather_icons/icons8-snow-fall.png";
   } else if ( !strcmp(icon_code, "50n") ) {
     return "./weather_icons/icons8-fog.png";
-  } else {  
+  } else {
     return NULL;
   }
 }

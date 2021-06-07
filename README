@@ -1,0 +1,10 @@
+Project: Smart Mirror
+
+Technologies: C, GTK+3.0, RaspberryPi 3
+
+Description: Will display date, time, weather using data parsed from XML file
+provided by openweathermap.org. Will use GTK+3 to create the UI.
+After development is finished I will use a two way mirror backed with a computer
+monitor connected to the RaspBerryPi.
+
+Challenges: Learning how to use GTK+3, working with the main event loop
